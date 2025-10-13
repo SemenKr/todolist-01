@@ -1,19 +1,19 @@
 export type TodolistItemPropsType = {
     title: string
     tasks: TaskType[]
-    date?: string
-    removeTask: (id: number) => void
-    toggleTask: (id: number) => void
+    removeTask: (id: string) => void
+    toggleTask: (id: string) => void
     setFilerValue: (value: FilterValueType) => void
+    addTask: (taskTitle: string) => void
 }
 export type TaskItemType = {
     task: TaskType
-    removeTask: (id: number) => void
-    toggleTask: (id: number) => void
+    removeTask: (id: string) => void
+    toggleTask: (id: string) => void
 }
 
 export type TaskType = {
-    id: number
+    id: string
     title: string
     isDone: boolean
 }

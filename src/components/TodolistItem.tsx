@@ -1,22 +1,48 @@
-import {Button} from './Button.tsx';
+import { CustomButton} from './CustomButton.tsx';
 import {TaskItem} from './TaskItem.tsx';
 import {TodolistItemPropsType} from '../types/types.ts';
+import {useState, KeyboardEvent} from 'react';
 
 
-export const TodolistItem = ({
-                                 title,
-                                 tasks = [],
-                                 date,
-                                 removeTask,
-                                 toggleTask,
-                                 setFilerValue
-                             }: TodolistItemPropsType) => {
+export const TodolistItem = (
+    {
+        title,
+        tasks = [],
+        removeTask,
+        toggleTask,
+        setFilerValue,
+        addTask
+    }: TodolistItemPropsType) => {
+
+    const [inputValue, setInputValue] = useState('');
+    const addTaskHandler = () => {
+        const trimmedInput = inputValue.trim();
+        if (!trimmedInput) return
+        addTask(trimmedInput)
+        setInputValue('');
+    }
+    const onEnterAddTaskHandler = (e:KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            addTaskHandler()
+        }
+    }
 
     return (
         <div>
             <h3>{title}</h3>
-            <input type="text"/>
-            <Button title={'+'}/>
+            <input
+                type="text"
+                placeholder={"new task"}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e:KeyboardEvent<HTMLInputElement>) => onEnterAddTaskHandler(e)}
+            />
+            <CustomButton onClick={addTaskHandler} title={'+'}/>
+            <div>
+                <CustomButton size="default" title={'All'} onClick={() => setFilerValue('all')}/>
+                <CustomButton title={'Active'} onClick={() => setFilerValue('active')}/>
+                <CustomButton title={'Completed'} onClick={() => setFilerValue('completed')}/>
+            </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
             ) : (
@@ -34,13 +60,6 @@ export const TodolistItem = ({
                     })}
                 </ul>
             )}
-
-            <div>{date}</div>
-            <div>
-                <Button title={'All'} callBack={() => setFilerValue('all')}/>
-                <Button title={'Active'} callBack={() => setFilerValue('active')}/>
-                <Button title={'Completed'} callBack={() => setFilerValue('completed')}/>
-            </div>
         </div>
     )
 }
