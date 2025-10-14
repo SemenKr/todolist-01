@@ -32,36 +32,60 @@ export const TodolistItem = (
     }
 
     return (
-        <div>
-            <h3>{title}</h3>
-            <input
-                type="text"
-                placeholder={"new task"}
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={(e:KeyboardEvent<HTMLInputElement>) => onEnterAddTaskHandler(e)}
-            />
-            <CustomButton onClick={addTaskHandler} title={'+'}/>
-            <div>
-                <CustomButton size="default" title={'All'} onClick={() => setFilerValueHandler('all')}/>
-                <CustomButton title={'Active'} onClick={() => setFilerValueHandler('active')}/>
-                <CustomButton title={'Completed'} onClick={() => setFilerValueHandler('completed')}/>
+        <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-sm border border-gray-100">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">{title}</h3>
+
+            <div className="flex gap-2 mb-6">
+                <input
+                    type="text"
+                    placeholder="Добавьте новую задачу..."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => onEnterAddTaskHandler(e)}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+                <CustomButton
+                    onClick={addTaskHandler}
+                    title={'+'}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-bold text-lg"
+                />
             </div>
+
+            <div className="flex gap-2 mb-6">
+                <CustomButton
+                    size="default"
+                    title={'All'}
+                    onClick={() => setFilerValueHandler('all')}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                />
+                <CustomButton
+                    title={'Active'}
+                    onClick={() => setFilerValueHandler('active')}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                />
+                <CustomButton
+                    title={'Completed'}
+                    onClick={() => setFilerValueHandler('completed')}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                />
+            </div>
+
             {tasks.length === 0 ? (
-                <p>Тасок нет</p>
+                <div className="text-center py-8 text-gray-500">
+                    <p>Задач пока нет</p>
+                    <p className="text-sm mt-1">Добавьте первую задачу выше</p>
+                </div>
             ) : (
-                <ul>
-                    {tasks.map(task => {
-                        return (
-                            <li key={task.id || crypto.randomUUID()}>
-                                <TaskItem
-                                    task={task}
-                                    removeTask={removeTask}
-                                    toggleTask={toggleTask}
-                                />
-                            </li>
-                        )
-                    })}
+                <ul className="space-y-2">
+                    {tasks.map(task => (
+                        <li key={task.id || crypto.randomUUID()} className="bg-gray-50 rounded-lg">
+                            <TaskItem
+                                task={task}
+                                removeTask={removeTask}
+                                toggleTask={toggleTask}
+                            />
+                        </li>
+                    ))}
                 </ul>
             )}
         </div>
