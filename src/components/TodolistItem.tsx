@@ -1,6 +1,6 @@
 import { CustomButton} from './CustomButton.tsx';
 import {TaskItem} from './TaskItem.tsx';
-import {TodolistItemPropsType} from '../types/types.ts';
+import {FilterValueType, TodolistItemPropsType} from '../types/types.ts';
 import {useState, KeyboardEvent} from 'react';
 
 
@@ -13,8 +13,9 @@ export const TodolistItem = (
         setFilerValue,
         addTask
     }: TodolistItemPropsType) => {
-
+// const
     const [inputValue, setInputValue] = useState('');
+// fn
     const addTaskHandler = () => {
         const trimmedInput = inputValue.trim();
         if (!trimmedInput) return
@@ -25,6 +26,9 @@ export const TodolistItem = (
         if (e.key === 'Enter') {
             addTaskHandler()
         }
+    }
+    const setFilerValueHandler = (value: FilterValueType) => {
+        setFilerValue(value)
     }
 
     return (
@@ -39,9 +43,9 @@ export const TodolistItem = (
             />
             <CustomButton onClick={addTaskHandler} title={'+'}/>
             <div>
-                <CustomButton size="default" title={'All'} onClick={() => setFilerValue('all')}/>
-                <CustomButton title={'Active'} onClick={() => setFilerValue('active')}/>
-                <CustomButton title={'Completed'} onClick={() => setFilerValue('completed')}/>
+                <CustomButton size="default" title={'All'} onClick={() => setFilerValueHandler('all')}/>
+                <CustomButton title={'Active'} onClick={() => setFilerValueHandler('active')}/>
+                <CustomButton title={'Completed'} onClick={() => setFilerValueHandler('completed')}/>
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
