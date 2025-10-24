@@ -5,7 +5,6 @@ import {FilterValueType, TaskType} from './types/types.ts';
 import {v1} from 'uuid';
 
 
-
 export const App = () => {
 
     const [tasks, setTasks] = useState<TaskType[]>([
@@ -28,6 +27,7 @@ export const App = () => {
         tasksForToDoList = tasks.filter((item) =>
             !item.isDone)
     }
+
     function addTask(taskTitle: string) {
         console.log(taskTitle);
         const newTask: TaskType = {id: v1(), title: taskTitle, isDone: false};
@@ -44,11 +44,9 @@ export const App = () => {
 
     }
 
-    function toggleTask(id: string) {
+    function toggleTask(id: string, isDone: boolean) {
 
-        setTasks(prevTasks => prevTasks.map(task =>
-            task.id === id ? {...task, isDone: !task.isDone} : task
-        ));
+        setTasks(tasks.map(t => t.id === id ? {...t, isDone: isDone} : t));
     }
 
     function setFilerValue(value: FilterValueType) {

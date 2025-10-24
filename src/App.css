@@ -1,12 +1,16 @@
 .app {
-  padding: 30px;
-  display: flex;
-	justify-content: center;
-	align-items: center;
+	padding: 30px;
+	display: flex;
+	justify-content: flex-start; /* ← Изменили с center */
+	align-items: stretch;        /* ← Изменили с center */
 	width: 100%;
 	flex-direction: column;
+	max-width: 1200px;          /* ← Добавили максимальную ширину */
+	margin: 0 auto;             /* ← Центрируем контейнер */
 }
 
 .app > div {
-  margin-right: 50px;
+	margin-bottom: 20px;        /* ← Добавляем нижний отступ между элементами */
+	width: 100%;
+	min-width: 300px/* ← Занимает всю ширину */
 }
