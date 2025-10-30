@@ -1,46 +1,49 @@
-import { Button } from '../Button.tsx';
-import { TaskItemType } from '../../types/types.ts';
+import {KeyboardEvent} from 'react';
+import {Button} from '../Button.tsx';
+import {TaskItemType} from '../../types/types.ts';
 import {Checkbox} from '@/components/ui/checkbox.tsx';
 import {PopoverContent, PopoverTrigger} from '@/components/ui/popover.tsx';
 import {Input} from '@/components/ui/input.tsx';
 import {Popover} from '@radix-ui/react-popover';
 import {useState} from 'react';
 
-export function TaskItem({
-                             task,
-                             removeTask,
-                             toggleTask,
-                             onEditTask
-                         }: TaskItemType) {
+export function TaskItem(
+    {
+        task,
+        removeTask,
+        toggleTask,
+        onEditTask
+    }: TaskItemType) {
+
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(task.title);
-
+    // Функции для редактирования
     const handleEditSave = () => {
         if (editValue.trim() && editValue !== task.title) {
             onEditTask?.(task.id, editValue.trim());
         }
         setIsEditing(false);
     }
-
     const handleEditCancel = () => {
         setEditValue(task.title);
         setIsEditing(false);
     }
-
-    const handleKeyPress = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            handleEditSave();
-        } else if (e.key === 'Escape') {
-            handleEditCancel();
-        }
-    }
-
+    // Функции для задачи
     const removeTaskHandler = () => {
         removeTask?.(task.id)
     }
 
     const toggleTaskHandler = (checked: boolean) => {
         toggleTask?.(task.id, checked)
+    }
+
+
+    const handleKeyPress = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleEditSave();
+        } else if (e.key === 'Escape') {
+            handleEditCancel();
+        }
     }
 
     return (
@@ -58,10 +61,10 @@ export function TaskItem({
                         <span
                             className={`
                                 text-base font-medium w-full break-words cursor-pointer
-                                hover:bg-gray-50 rounded px-2 py-1 transition-colors
+                                hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-2 py-1 transition-colors
                                 ${task.isDone
-                                ? 'line-through text-gray-400'
-                                : 'text-gray-900'
+                                ? 'line-through text-gray-400 dark:text-gray-500'
+                                : 'text-gray-900 dark:text-gray-100'
                             }
                             `}
                         >
@@ -88,7 +91,8 @@ export function TaskItem({
                                 <Button
                                     onClick={handleEditSave}
                                     className="text-sm"
-                                    title={"Сохранить"}
+                                    title={'Сохранить'}
+                                    disabled={!editValue.trim()}
                                 />
                             </div>
                         </div>
