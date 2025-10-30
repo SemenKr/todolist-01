@@ -8,7 +8,7 @@ type Props = {
     size?: 'default' | 'sm' | 'lg' | 'icon' | 'icon-sm' | 'icon-lg'
 }
 
-export const CustomButton = ({title, onClick, className, variant = 'outline', size = 'default'}: Props) => {
+export const Button = ({title, onClick, className, variant = 'outline', size = 'default'}: Props) => {
     const onClickHandler = () => {
         onClick()
     }

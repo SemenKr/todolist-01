@@ -1,6 +1,6 @@
-import { CustomButton} from './CustomButton.tsx';
+import { Button} from '../Button.tsx';
 import {TaskItem} from './TaskItem.tsx';
-import {FilterValueType, TodolistItemPropsType} from '../types/types.ts';
+import {FilterValueType, TodolistItemPropsType} from '../../types/types.ts';
 import {useState, KeyboardEvent} from 'react';
 
 
@@ -11,7 +11,8 @@ export const TodolistItem = (
         removeTask,
         toggleTask,
         setFilerValue,
-        addTask
+        addTask,
+        editTask,
     }: TodolistItemPropsType) => {
 // const
     const [inputValue, setInputValue] = useState('');
@@ -44,7 +45,7 @@ export const TodolistItem = (
                     onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => onEnterAddTaskHandler(e)}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                 />
-                <CustomButton
+                <Button
                     onClick={addTaskHandler}
                     title={'+'}
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-bold text-lg"
@@ -52,18 +53,18 @@ export const TodolistItem = (
             </div>
 
             <div className="flex gap-2 mb-6">
-                <CustomButton
+                <Button
                     size="default"
                     title={'All'}
                     onClick={() => setFilerValueHandler('all')}
                     className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                 />
-                <CustomButton
+                <Button
                     title={'Active'}
                     onClick={() => setFilerValueHandler('active')}
                     className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                 />
-                <CustomButton
+                <Button
                     title={'Completed'}
                     onClick={() => setFilerValueHandler('completed')}
                     className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
@@ -83,6 +84,7 @@ export const TodolistItem = (
                                 task={task}
                                 removeTask={removeTask}
                                 toggleTask={toggleTask}
+                                onEditTask={editTask}
                             />
                         </li>
                     ))}

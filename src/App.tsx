@@ -1,5 +1,5 @@
 import './App.css'
-import {TodolistItem} from './components/TodolistItem.tsx';
+import {TodolistItem} from './components/Todolist/TodolistItem.tsx';
 import {useState} from 'react';
 import {FilterValueType, TaskType} from './types/types.ts';
 import {v1} from 'uuid';
@@ -44,6 +44,10 @@ export const App = () => {
 
     }
 
+    function editTask(id: string, newTitle: string) {
+        setTasks(tasks.map(t => t.id === id ? { ...t, title: newTitle } : t));
+    }
+
     function toggleTask(id: string, isDone: boolean) {
 
         setTasks(tasks.map(t => t.id === id ? {...t, isDone: isDone} : t));
@@ -62,6 +66,7 @@ export const App = () => {
                 toggleTask={toggleTask}
                 setFilerValue={setFilerValue}
                 addTask={addTask}
+                editTask={editTask}
             />
         </div>
     )
