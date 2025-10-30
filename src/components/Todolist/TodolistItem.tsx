@@ -2,6 +2,7 @@ import { Button} from '../Button.tsx';
 import {TaskItem} from './TaskItem.tsx';
 import {FilterValueType, TodolistItemPropsType} from '../../types/types.ts';
 import {useState, KeyboardEvent} from 'react';
+import {FilterButtons} from '@/components/Todolist/FilterButtons.tsx';
 
 
 export const TodolistItem = (
@@ -13,6 +14,7 @@ export const TodolistItem = (
         setFilerValue,
         addTask,
         editTask,
+        filter,
     }: TodolistItemPropsType) => {
 // const
     const [inputValue, setInputValue] = useState('');
@@ -28,8 +30,8 @@ export const TodolistItem = (
             addTaskHandler()
         }
     }
-    const setFilerValueHandler = (value: FilterValueType) => {
-        setFilerValue(value)
+    const handleFilterChange = (value: FilterValueType) => {
+        setFilerValue(value);
     }
 
     return (
@@ -52,22 +54,11 @@ export const TodolistItem = (
                 />
             </div>
 
-            <div className="flex gap-2 mb-6">
-                <Button
-                    size="default"
-                    title={'All'}
-                    onClick={() => setFilerValueHandler('all')}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                />
-                <Button
-                    title={'Active'}
-                    onClick={() => setFilerValueHandler('active')}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                />
-                <Button
-                    title={'Completed'}
-                    onClick={() => setFilerValueHandler('completed')}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+            {/* ФИЛЬТРЫ - теперь через компонент */}
+            <div className="mb-6">
+                <FilterButtons
+                    currentFilter={filter}
+                    onFilterChange={handleFilterChange}
                 />
             </div>
 

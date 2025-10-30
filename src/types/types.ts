@@ -6,6 +6,7 @@ export type TodolistItemPropsType = {
     setFilerValue: (value: FilterValueType) => void
     addTask: (taskTitle: string) => void
     editTask?: (id: string, newTitle: string) => void
+    filter: FilterValueType
 }
 export type TaskItemType = {
     task: TaskType
@@ -20,3 +21,8 @@ export type TaskType = {
 }
 
 export type FilterValueType = 'all' | 'completed' | 'active'
+
+export type FilterButtonsProps = {
+    currentFilter: FilterValueType
+    onFilterChange: (filter: FilterValueType) => void
+}

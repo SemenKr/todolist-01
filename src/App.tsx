@@ -67,6 +67,7 @@ export const App = () => {
                 setFilerValue={setFilerValue}
                 addTask={addTask}
                 editTask={editTask}
+                filter={filter}
             />
         </div>
     )
