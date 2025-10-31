@@ -1,12 +1,11 @@
-// components/Todolist/FilterButtons.tsx
 import { Button } from '../Button.tsx'
 import {FilterButtonsProps, FilterValueType} from '../../types/types.ts'
 
 export const FilterButtons = ({ currentFilter, onFilterChange }: FilterButtonsProps) => {
-    const filters: { value: FilterValueType; label: string }[] = [
-        { value: 'all', label: 'All' },
-        { value: 'active', label: 'Active' },
-        { value: 'completed', label: 'Completed' }
+    const filters: { value: FilterValueType; label: string; shortLabel?: string }[] = [
+        { value: 'all', label: 'All', shortLabel: 'All' },
+        { value: 'active', label: 'Active', shortLabel: 'Act' },
+        { value: 'completed', label: 'Completed', shortLabel: 'Compl' }
     ]
 
     const getButtonVariant = (filterValue: FilterValueType) => {
@@ -14,16 +13,20 @@ export const FilterButtons = ({ currentFilter, onFilterChange }: FilterButtonsPr
     }
 
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-1 sm:gap-2">
             {filters.map((filter) => (
                 <Button
                     key={filter.value}
-                    title={filter.label}
+                    title={filter.label} // Полное название для tooltip
                     onClick={() => onFilterChange(filter.value)}
                     variant={getButtonVariant(filter.value)}
                     size="sm"
-                    className="flex-1"
-                />
+                    className="flex-1 text-xs sm:text-sm" // Меньший текст на мобильных
+                >
+                    {/* Показываем короткую версию на мобильных, полную на больших экранах */}
+                    <span className="sm:hidden">{filter.shortLabel}</span>
+                    <span className="hidden sm:inline">{filter.label}</span>
+                </Button>
             ))}
         </div>
     )

@@ -3,6 +3,7 @@ import {TodolistItem} from './components/Todolist/TodolistItem.tsx';
 import {useState} from 'react';
 import {FilterValueType, TaskType} from './types/types.ts';
 import {v1} from 'uuid';
+import {Toaster} from 'sonner';
 
 
 export const App = () => {
@@ -68,6 +69,13 @@ export const App = () => {
                 addTask={addTask}
                 editTask={editTask}
                 filter={filter}
+            />
+            <Toaster
+                position="top-right"
+                theme="system" // или "light", "dark"
+                richColors
+                duration={1000}
+                visibleToasts={2git}
             />
         </div>
     )

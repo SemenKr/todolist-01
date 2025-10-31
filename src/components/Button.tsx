@@ -2,7 +2,7 @@ import {Button as UiButton} from '@/components/ui/button'
 import {ReactNode} from 'react';
 
 type Props = {
-    title: string
+    title?: string
     children?: ReactNode
     onClick: () => void
     className?: string
