@@ -4,18 +4,19 @@ import {useState} from 'react';
 import {FilterValueType, TaskType} from './types/types.ts';
 import {v1} from 'uuid';
 import {Toaster} from 'sonner';
+import {useLocalStorage} from '@/hooks/useLocalStorage.ts';
 
 
 export const App = () => {
 
-    const [tasks, setTasks] = useState<TaskType[]>([
+    const [tasks, setTasks] = useLocalStorage<TaskType[]>('todolist-tasks', [
         {id: v1(), title: 'HTML&CSS', isDone: true},
         {id: v1(), title: 'JS', isDone: true},
         {id: v1(), title: 'ReactJS', isDone: false},
         {id: v1(), title: 'Redux', isDone: false},
         {id: v1(), title: 'Typescript', isDone: false},
         {id: v1(), title: 'RTK query', isDone: true},
-    ]);
+    ])
 
     const [filter, setFilter] = useState<FilterValueType>('all');
 
@@ -58,6 +59,10 @@ export const App = () => {
         setFilter(value);
     }
 
+    function clearTasks() {
+        setTasks([])
+    }
+
     return (
         <div className="app">
             <TodolistItem
@@ -69,6 +74,7 @@ export const App = () => {
                 addTask={addTask}
                 editTask={editTask}
                 filter={filter}
+                clearTasks={clearTasks}
             />
             <Toaster
                 position="top-center"

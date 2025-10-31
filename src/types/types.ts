@@ -7,6 +7,7 @@ export type TodolistItemPropsType = {
     addTask: (taskTitle: string) => void
     editTask?: (id: string, newTitle: string) => void
     filter: FilterValueType
+    clearTasks?: () => void
 }
 export type TaskItemType = {
     task: TaskType

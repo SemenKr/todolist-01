@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui'
+import {Button, CardFooter} from '@/components/ui'
 import { TaskItem } from './TaskItem.tsx';
 import { FilterValueType, TodolistItemPropsType } from '../../types/types.ts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
@@ -9,7 +9,9 @@ import { Plus } from 'lucide-react';
 import { Title } from '@/components/ui/title.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import { toast } from 'sonner';
-import { ScrollArea } from '@/components/ui/scroll-area'; // ← правильный импорт
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Trash2 } from 'lucide-react'
+import {EmptyState} from '@/components/Todolist/EmptyState.tsx';
 
 export const TodolistItem = ({
                                  title,
@@ -20,6 +22,7 @@ export const TodolistItem = ({
                                  addTask,
                                  editTask,
                                  filter,
+                                 clearTasks
                              }: TodolistItemPropsType) => {
 
     const [inputValue, setInputValue] = useState('');
@@ -44,6 +47,13 @@ export const TodolistItem = ({
     const handleFilterChange = (value: FilterValueType) => {
         setFilerValue(value);
         toast.info(`Фильтр изменен на: ${value === 'all' ? 'Все' : value === 'active' ? 'Активные' : 'Выполненные'}`);
+    }
+
+    const handleClearTasks = () => {
+        if(clearTasks) {
+            clearTasks()
+            toast.info('Все задачи очищены! 🧹')
+        }
     }
 
     return (
@@ -82,10 +92,7 @@ export const TodolistItem = ({
                 </div>
 
                 {tasks.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                        <p>Задач пока нет</p>
-                        <p className="text-sm mt-1">Добавьте первую задачу выше</p>
-                    </div>
+                    <EmptyState />
                 ) : (
                     <ScrollArea className="h-[400px] pr-4 rounded-md">
                         <div className="p-1 space-y-2">
@@ -106,6 +113,19 @@ export const TodolistItem = ({
                     </ScrollArea>
                 )}
             </CardContent>
+            <CardFooter className="flex justify-center pt-6 pb-2 border-t">
+                <Button
+                    variant="outline"
+                    onClick={handleClearTasks}
+                    className="rounded-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300 transition-all duration-300 group"
+                >
+                    <Trash2 className="h-4 w-4 mr-2 group-hover:animate-pulse" />
+                    Очистить все задачи
+                    <span className="ml-2 text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full group-hover:bg-red-200 transition-colors">
+                {tasks.length}
+            </span>
+                </Button>
+            </CardFooter>
         </Card>
     );
 };
