@@ -71,11 +71,11 @@ export const App = () => {
                 filter={filter}
             />
             <Toaster
-                position="top-right"
+                position="top-center"
                 theme="system" // или "light", "dark"
                 richColors
                 duration={1000}
-                visibleToasts={2git}
+                visibleToasts={2}
             />
         </div>
     )

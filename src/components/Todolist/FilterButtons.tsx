@@ -1,4 +1,4 @@
-import { Button } from '../Button.tsx'
+import { Button } from '@/components/ui';
 import {FilterButtonsProps, FilterValueType} from '../../types/types.ts'
 
 export const FilterButtons = ({ currentFilter, onFilterChange }: FilterButtonsProps) => {

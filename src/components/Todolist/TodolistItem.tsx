@@ -1,51 +1,52 @@
-import {Button} from '../Button.tsx';
-import {TaskItem} from './TaskItem.tsx';
-import {FilterValueType, TodolistItemPropsType} from '../../types/types.ts';
+import { Button } from '@/components/ui'
+import { TaskItem } from './TaskItem.tsx';
+import { FilterValueType, TodolistItemPropsType } from '../../types/types.ts';
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import {useState, KeyboardEvent} from 'react';
-import {FilterButtons} from '@/components/Todolist/FilterButtons.tsx';
-import {Input} from '@/components/ui/input.tsx';
-import {Plus} from 'lucide-react';
-import {Title} from '@/components/ui/title.tsx';
-import {Badge} from '@/components/ui/badge.tsx';
-import {toast} from 'sonner';
+import { useState, KeyboardEvent } from 'react';
+import { FilterButtons } from '@/components/Todolist/FilterButtons.tsx';
+import { Input } from '@/components/ui/input.tsx';
+import { Plus } from 'lucide-react';
+import { Title } from '@/components/ui/title.tsx';
+import { Badge } from '@/components/ui/badge.tsx';
+import { toast } from 'sonner';
+import { ScrollArea } from '@/components/ui/scroll-area'; // ← правильный импорт
 
-export const TodolistItem = (
-    {
-        title,
-        tasks = [],
-        removeTask,
-        toggleTask,
-        setFilerValue,
-        addTask,
-        editTask,
-        filter,
-    }: TodolistItemPropsType) => {
-// const
+export const TodolistItem = ({
+                                 title,
+                                 tasks = [],
+                                 removeTask,
+                                 toggleTask,
+                                 setFilerValue,
+                                 addTask,
+                                 editTask,
+                                 filter,
+                             }: TodolistItemPropsType) => {
+
     const [inputValue, setInputValue] = useState('');
-// fn
+
     const addTaskHandler = () => {
         const trimmedInput = inputValue.trim();
         if (!trimmedInput) {
             toast.error('Введите текст задачи');
-            return
+            return;
         }
-        addTask(trimmedInput)
+        addTask(trimmedInput);
         setInputValue('');
         toast.success('Задача добавлена! 🎉');
     }
+
     const onEnterAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            addTaskHandler()
+            addTaskHandler();
         }
     }
+
     const handleFilterChange = (value: FilterValueType) => {
         setFilerValue(value);
         toast.info(`Фильтр изменен на: ${value === 'all' ? 'Все' : value === 'active' ? 'Активные' : 'Выполненные'}`);
     }
 
     return (
-
         <Card className="max-w-md mx-auto">
             <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div className="flex items-center justify-between align-middle w-full sm:w-auto">
@@ -54,8 +55,8 @@ export const TodolistItem = (
                 </div>
                 <Badge variant="secondary" className="hidden sm:inline-flex">{tasks.length}</Badge>
             </CardHeader>
-            <CardContent>
-                <div className="flex flex-col sm:flex-row gap-2 mb-6">
+            <CardContent className="space-y-6"> {/* ← добавляем отступы между секциями */}
+                <div className="flex flex-col sm:flex-row gap-2">
                     <Input
                         placeholder="Добавьте новую задачу..."
                         value={inputValue}
@@ -69,12 +70,11 @@ export const TodolistItem = (
                         className="sm:px-4 px-3 py-2"
                     >
                         <Plus className="h-5 w-5" />
-                        <span className="sr-only">Добавить задачу</span> {/* для accessibility */}
+                        <span className="sr-only">Добавить задачу</span>
                     </Button>
                 </div>
 
-                {/* ФИЛЬТРЫ - теперь через компонент */}
-                <div className="mb-6">
+                <div>
                     <FilterButtons
                         currentFilter={filter}
                         onFilterChange={handleFilterChange}
@@ -87,21 +87,25 @@ export const TodolistItem = (
                         <p className="text-sm mt-1">Добавьте первую задачу выше</p>
                     </div>
                 ) : (
-                    <ul className="space-y-2">
-                        {tasks.map(task => (
-                            <li key={task.id} className="bg-gray-50 dark:bg-gray-700 rounded-lg">
-                                <TaskItem
-                                    task={task}
-                                    removeTask={removeTask}
-                                    toggleTask={toggleTask}
-                                    onEditTask={editTask}
-                                />
-                            </li>
-                        ))}
-                    </ul>
+                    <ScrollArea className="h-[400px] pr-4 rounded-md">
+                        <div className="p-1 space-y-2">
+                            {tasks.map(task => (
+                                <div
+                                    key={task.id}
+                                    className="rounded-lg border border-gray-200 dark:border-gray-600" // ← добавляем border вместо фона
+                                >
+                                    <TaskItem
+                                        task={task}
+                                        removeTask={removeTask}
+                                        toggleTask={toggleTask}
+                                        onEditTask={editTask}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </ScrollArea>
                 )}
             </CardContent>
         </Card>
-
-    )
-}
+    );
+};
