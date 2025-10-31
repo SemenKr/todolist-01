@@ -9,7 +9,6 @@ import { Plus } from 'lucide-react';
 import { Title } from '@/components/ui/title.tsx';
 import { Badge } from '@/components/ui/badge.tsx';
 import { toast } from 'sonner';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Trash2 } from 'lucide-react'
 import {EmptyState} from '@/components/Todolist/EmptyState.tsx';
 
@@ -49,7 +48,7 @@ export const TodolistItem = ({
         toast.info(`Фильтр изменен на: ${value === 'all' ? 'Все' : value === 'active' ? 'Активные' : 'Выполненные'}`);
     }
 
-    const handleClearTasks = () => {
+    const handleClearAll = () => {
         if(clearTasks) {
             clearTasks()
             toast.info('Все задачи очищены! 🧹')
@@ -94,7 +93,7 @@ export const TodolistItem = ({
                 {tasks.length === 0 ? (
                     <EmptyState />
                 ) : (
-                    <ScrollArea className="h-[400px] pr-4 rounded-md">
+                    <div className="max-h-[500px] overflow-y-auto custom-scrollbar">
                         <div className="p-1 space-y-2">
                             {tasks.map(task => (
                                 <div
@@ -110,20 +109,26 @@ export const TodolistItem = ({
                                 </div>
                             ))}
                         </div>
-                    </ScrollArea>
+                    </div>
                 )}
             </CardContent>
-            <CardFooter className="flex justify-center pt-6 pb-2 border-t">
+            <CardFooter className={`flex justify-start pt-4 pb-4 transition-all duration-500 ${tasks.length > 0 ? 'opacity-100 max-h-20' : 'opacity-0 max-h-0 pointer-events-none'}`}>
                 <Button
                     variant="outline"
-                    onClick={handleClearTasks}
-                    className="rounded-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300 transition-all duration-300 group"
+                    onClick={handleClearAll}
+                    className="rounded-full border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 dark:hover:text-red-300 hover:border-red-300 dark:hover:border-red-600 transition-all duration-300 group overflow-hidden"
                 >
-                    <Trash2 className="h-4 w-4 mr-2 group-hover:animate-pulse" />
-                    Очистить все задачи
-                    <span className="ml-2 text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full group-hover:bg-red-200 transition-colors">
-                {tasks.length}
-            </span>
+
+                    <Trash2 className="h-4 w-4 ml-1" />
+
+                    {/* Текст появляется плавно */}
+                    <span className="max-w-0 group-hover:max-w-[80px] group-hover:ml-2 transition-all duration-300 overflow-hidden whitespace-nowrap text-sm">
+            Очистить
+        </span>
+
+                    <span className="ml-1 text-xs bg-red-100 dark:bg-red-800 text-red-600 dark:text-red-300 px-1.5 py-0.5 rounded-full font-medium border border-red-200 dark:border-red-700">
+            {tasks.length}
+        </span>
                 </Button>
             </CardFooter>
         </Card>
