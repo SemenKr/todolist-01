@@ -58,7 +58,7 @@ export function TaskItem({
 
     return (
         <div
-            className="flex items-center justify-between gap-3 p-4 rounded-lg group transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+            className="flex items-center justify-between gap-3 px-2 py-1  rounded-lg group transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
             <div className="flex items-center gap-3 flex-1 min-w-0">
                 <Checkbox
                     checked={task.isDone}

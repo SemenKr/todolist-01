@@ -24,16 +24,9 @@ export const App = () => {
     const [tasks, setTasks] = useLocalStorage<TasksListType>('todolist-tasks', {
             [todoLists[0].id]: [
                 {id: v1(), title: 'HTML&CSS', isDone: true},
-                {id: v1(), title: 'JS', isDone: true},
-                {id: v1(), title: 'ReactJS', isDone: false},
-                {id: v1(), title: 'Redux', isDone: false},
-                {id: v1(), title: 'Typescript', isDone: false},
-                {id: v1(), title: 'RTK query', isDone: true},
             ],
             [todoLists[1].id]: [
                 {id: v1(), title: 'books', isDone: true},
-                {id: v1(), title: 'some items', isDone: true},
-                {id: v1(), title: 'other task', isDone: false},
             ],
         }
     )

@@ -129,7 +129,8 @@ export const TodolistItem = (
                 )}
             </CardContent>
             <CardFooter
-                className={`flex justify-start pt-4 pb-4 transition-all duration-500 ${tasks.length > 0 ? 'opacity-100 max-h-20' : 'opacity-0 max-h-0 pointer-events-none'}`}>
+                className={`flex justify-start pt-4 pb-4 transition-all duration-500 ${
+                    filteredTasks.length > 0 ? 'opacity-100 max-h-20' : 'opacity-0 max-h-0 pointer-events-none'}`}>
                 <Button
                     variant="outline"
                     onClick={handleClearAll}
