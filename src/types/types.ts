@@ -1,24 +1,36 @@
+export type ToDoListType = {
+    id: string
+    title: string
+    filter: FilterValueType
+}
+
 export type TodolistItemPropsType = {
+    id: string
     title: string
     tasks: TaskType[]
-    removeTask: (id: string) => void
-    toggleTask: (id: string, isDone: boolean) => void
-    setFilerValue: (value: FilterValueType) => void
-    addTask: (taskTitle: string) => void
-    editTask?: (id: string, newTitle: string) => void
+    removeTask: (taskId: TaskType['id'], todolistId: ToDoListType['id']) => void
+    toggleTask: (id: string, isDone: boolean, todolistId: ToDoListType['id']) => void
+    changeFilter: (value: FilterValueType, todolistId: ToDoListType['id']) => void
+    addTask: (taskTitle: TaskType['title'], todolistId: ToDoListType['id']) => void
+    editTask?: (id: string, newTitle: string, todolistId: ToDoListType['id']) => void
     filter: FilterValueType
-    clearTasks?: () => void
+    clearTasks: (todolistId: ToDoListType['id']) => void
 }
 export type TaskItemType = {
+    todolistId: ToDoListType['id']
     task: TaskType
-    removeTask: (id: string) => void
-    toggleTask: (id: string, isDone: boolean) => void
-    onEditTask?: (id: string, newTitle: string) => void
+    removeTask: (id: TaskType['id'], todolistId: ToDoListType['id']) => void
+    toggleTask: (id: TaskType['id'], isDone: TaskType['isDone'], todolistId: ToDoListType['id']) => void
+    onEditTask?: (id: TaskType['id'], newTitle: TaskType['title'], todolistId: ToDoListType['id']) => void
 }
 export type TaskType = {
     id: string
     title: string
     isDone: boolean
+}
+
+export type TasksListType = {
+    [todolistId: string]: TaskType[]
 }
 
 export type FilterValueType = 'all' | 'completed' | 'active'

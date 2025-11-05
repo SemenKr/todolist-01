@@ -1,12 +1,13 @@
-import { Button } from '@/components/ui';
-import { TaskItemType } from '../../types/types.ts';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { toast } from 'sonner';
+import {Button} from '@/components/ui';
+import {TaskItemType} from '../../types/types.ts';
+import {Checkbox} from '@/components/ui/checkbox';
+import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
+import {Input} from '@/components/ui/input';
+import {useState} from 'react';
+import {toast} from 'sonner';
 
 export function TaskItem({
+                             todolistId,
                              task,
                              removeTask,
                              toggleTask,
@@ -17,7 +18,7 @@ export function TaskItem({
 
     const handleEditSave = () => {
         if (editValue.trim() && editValue !== task.title) {
-            onEditTask?.(task.id, editValue.trim());
+            onEditTask?.(task.id, editValue.trim(), todolistId);
             toast.success('Задача обновлена! ✏️');
         }
         setIsEditing(false);
@@ -37,13 +38,13 @@ export function TaskItem({
     }
 
     const removeTaskHandler = () => {
-        removeTask?.(task.id);
+        removeTask?.(task.id, todolistId);
         toast.error(`Задача "${task.title}" удалена 🗑️`);
     }
 
     const toggleTaskHandler = (checked: boolean) => {
         if (task.isDone !== checked) {
-            toggleTask?.(task.id, checked);
+            toggleTask?.(task.id, checked, todolistId);
 
             if (checked) {
                 toast.success(`Задача "${task.title}" выполнена! ✅`, {
@@ -56,7 +57,8 @@ export function TaskItem({
     }
 
     return (
-        <div className="flex items-center justify-between gap-3 p-4 rounded-lg group transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
+        <div
+            className="flex items-center justify-between gap-3 p-4 rounded-lg group transition-colors hover:bg-gray-50 dark:hover:bg-gray-600">
             <div className="flex items-center gap-3 flex-1 min-w-0">
                 <Checkbox
                     checked={task.isDone}
@@ -99,7 +101,7 @@ export function TaskItem({
                                 <Button
                                     onClick={handleEditSave}
                                     className="text-sm"
-                                    title={"Сохранить"}
+                                    title={'Сохранить'}
                                 />
                             </div>
                         </div>

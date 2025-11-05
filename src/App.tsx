@@ -1,7 +1,6 @@
 import './App.css'
 import {TodolistItem} from './components/Todolist/TodolistItem.tsx';
-import {useState} from 'react';
-import {FilterValueType, TaskType} from './types/types.ts';
+import {FilterValueType, TasksListType, TaskType, ToDoListType} from './types/types.ts';
 import {v1} from 'uuid';
 import {Toaster} from 'sonner';
 import {useLocalStorage} from '@/hooks/useLocalStorage.ts';
@@ -9,80 +8,117 @@ import {useLocalStorage} from '@/hooks/useLocalStorage.ts';
 
 export const App = () => {
 
-    const [tasks, setTasks] = useLocalStorage<TaskType[]>('todolist-tasks', [
-        {id: v1(), title: 'HTML&CSS', isDone: true},
-        {id: v1(), title: 'JS', isDone: true},
-        {id: v1(), title: 'ReactJS', isDone: false},
-        {id: v1(), title: 'Redux', isDone: false},
-        {id: v1(), title: 'Typescript', isDone: false},
-        {id: v1(), title: 'RTK query', isDone: true},
-    ])
+    const [todoLists, setTodoLists] = useLocalStorage<ToDoListType[]>('todoLists', [
+        {
+            id: v1(),
+            title: 'What to learn',
+            filter: 'all'
+        },
+        {
+            id: v1(),
+            title: 'What to bye',
+            filter: 'all'
+        }
+    ]);
 
-    const [filter, setFilter] = useState<FilterValueType>('all');
+    const [tasks, setTasks] = useLocalStorage<TasksListType>('todolist-tasks', {
+            [todoLists[0].id]: [
+                {id: v1(), title: 'HTML&CSS', isDone: true},
+                {id: v1(), title: 'JS', isDone: true},
+                {id: v1(), title: 'ReactJS', isDone: false},
+                {id: v1(), title: 'Redux', isDone: false},
+                {id: v1(), title: 'Typescript', isDone: false},
+                {id: v1(), title: 'RTK query', isDone: true},
+            ],
+            [todoLists[1].id]: [
+                {id: v1(), title: 'books', isDone: true},
+                {id: v1(), title: 'some items', isDone: true},
+                {id: v1(), title: 'other task', isDone: false},
+            ],
+        }
+    )
 
-    let tasksForToDoList = tasks;
 
-    if (filter === 'completed') {
-        tasksForToDoList = tasks.filter((item) => item.isDone)
+    function getTasksForTodolist (todolistId: ToDoListType['id']) {
+        return tasks[todolistId] || []
     }
-    if (filter === 'active') {
-        tasksForToDoList = tasks.filter((item) =>
-            !item.isDone)
-    }
-
-    function addTask(taskTitle: string) {
+    function addTask(taskTitle: string, todolistId: ToDoListType['id']) {
         console.log(taskTitle);
         const newTask: TaskType = {id: v1(), title: taskTitle, isDone: false};
-        setTasks([...tasks, newTask])
+        setTasks({
+            ...tasks,
+            [todolistId]: [...getTasksForTodolist(todolistId), newTask]
+        })
     }
 
-    function removeTask(id: string) {
-        const taskToRemove = tasks.find(task => task.id === id);
+    function removeTask(taskId: TaskType['id'], todolistId: ToDoListType['id']) {
+        const taskToRemove = getTasksForTodolist(todolistId).find(task => task.id === taskId);
 
-        let FilteredTasks = tasks.filter((task) => task.id !== id);
-        setTasks(FilteredTasks);
 
-        console.log('Осталось задач: ' + FilteredTasks.length + ', Удалили задачу: ', taskToRemove?.title);
-
+        setTasks({
+            ...tasks,
+            [todolistId]: [...getTasksForTodolist(todolistId).filter(task => task.id !== taskId)],
+        });
+        console.log('Удалили задачу: ', taskToRemove?.title);
     }
 
-    function editTask(id: string, newTitle: string) {
-        setTasks(tasks.map(t => t.id === id ? { ...t, title: newTitle } : t));
+    function editTask(taskId: TaskType['id'], newTitle: TaskType['title'], todolistId: ToDoListType['id']) {
+
+        setTasks({
+            ...tasks,
+            [todolistId]: getTasksForTodolist(todolistId).map(task => task.id === taskId ? {...task, title: newTitle } : task),
+        })
     }
 
-    function toggleTask(id: string, isDone: boolean) {
+    function changeTaskStatus(taskId: TaskType['id'], newStatus: TaskType['isDone'], todolistId: ToDoListType['id']) {
 
-        setTasks(tasks.map(t => t.id === id ? {...t, isDone: isDone} : t));
+        setTasks({
+            ...tasks,
+            [todolistId]: getTasksForTodolist(todolistId).map(task => task.id === taskId ? {...task, isDone: newStatus } : task),
+        });
     }
 
-    function setFilerValue(value: FilterValueType) {
-        setFilter(value);
+    function changeFilter(value: FilterValueType, todolistId: ToDoListType['id']) {
+        setTodoLists(todoLists.map(tl => tl.id === todolistId ? {...tl, filter: value} : tl));
     }
 
-    function clearTasks() {
-        setTasks([])
+    function clearTasks(todolistId: ToDoListType['id']) {
+        setTasks({
+            ...tasks,
+            [todolistId]: [],
+        })
     }
 
+    const getMappedTodoLists = () => {
+        return (
+            todoLists.length > 0 && todoLists.map(list => {
+                return (
+                    <TodolistItem
+                        key={list.id}
+                        id={list.id}
+                        title={list.title}
+                        tasks={getTasksForTodolist(list.id)}
+                        removeTask={removeTask}
+                        toggleTask={changeTaskStatus}
+                        changeFilter={changeFilter}
+                        addTask={addTask}
+                        editTask={editTask}
+                        filter={list.filter}
+                        clearTasks={clearTasks}
+                    />
+                )
+            })
+        )
+
+    }
     return (
-        <div className="app">
-            <TodolistItem
-                title="What to learn"
-                tasks={tasksForToDoList}
-                removeTask={removeTask}
-                toggleTask={toggleTask}
-                setFilerValue={setFilerValue}
-                addTask={addTask}
-                editTask={editTask}
-                filter={filter}
-                clearTasks={clearTasks}
-            />
-            <Toaster
-                position="top-center"
-                theme="system" // или "light", "dark"
-                richColors
-                duration={1000}
-                visibleToasts={2}
-            />
+        <div className="min-h-screen p-4 bg-background">
+            <div className="container mx-auto">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                    {getMappedTodoLists()}
+                </div>
+            </div>
+            <Toaster />
         </div>
     )
 }
