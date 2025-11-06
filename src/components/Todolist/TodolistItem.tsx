@@ -22,24 +22,26 @@ export const TodolistItem = (
         addTask,
         editTask,
         filter,
-        clearTasks
+        clearTasks,
+        deleteTodolist
     }: TodolistItemPropsType) => {
 
     const [inputValue, setInputValue] = useState('');
+    const currentTasks = tasks || [];
 
     // Мемоизированная фильтрация задач - пересчитывается только при изменении tasks или filter
     const filteredTasks = useMemo(() => {
         console.log(`Отфильтрован лист: "${title}", установлен фильтр: ${filter}, всего задач: ${tasks.length}`);
         switch (filter) {
             case 'active':
-                return tasks.filter(task => !task.isDone);
+                return currentTasks.filter(task => !task.isDone);
             case 'completed':
-                return tasks.filter(task => task.isDone);
+                return currentTasks.filter(task => task.isDone);
             case 'all':
             default:
-                return tasks;
+                return currentTasks;
         }
-    }, [tasks, filter, title]); // Зависимости: пересчитываем при изменении tasks или filter
+    }, [currentTasks, filter, title]); // Зависимости: пересчитываем при изменении tasks или filter
 
     const addTaskHandler = () => {
         const trimmedInput = inputValue.trim();
@@ -78,6 +80,14 @@ export const TodolistItem = (
                     <Title level={3} className="!m-0">{title}</Title>
                 </div>
                 <Badge variant="secondary" className="hidden sm:inline-flex">{filteredTasks.length}</Badge>
+                <Button
+                    variant="ghost"
+                    onClick={() => deleteTodolist(id)}
+                    className="rounded-full h-7 w-7 hover:bg-red-500 hover:text-white transition-colors border-0"
+                    aria-label="Закрыть"
+                >
+                    <svg viewBox="-6 -6 24 24"><path fill="currentColor" d="m7.314 5.9 3.535-3.536A1 1 0 1 0 9.435.95L5.899 4.485 2.364.95A1 1 0 1 0 .95 2.364l3.535 3.535L.95 9.435a1 1 0 1 0 1.414 1.414l3.535-3.535 3.536 3.535a1 1 0 1 0 1.414-1.414L7.314 5.899z"/></svg>
+                </Button>
             </CardHeader>
             <CardContent className="space-y-6"> {/* ← добавляем отступы между секциями */}
                 <div className="flex flex-col sm:flex-row gap-2">

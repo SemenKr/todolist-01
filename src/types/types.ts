@@ -15,6 +15,7 @@ export type TodolistItemPropsType = {
     editTask?: (id: string, newTitle: string, todolistId: ToDoListType['id']) => void
     filter: FilterValueType
     clearTasks: (todolistId: ToDoListType['id']) => void
+    deleteTodolist: (todolistId: ToDoListType['id']) => void
 }
 export type TaskItemType = {
     todolistId: ToDoListType['id']
