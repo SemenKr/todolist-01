@@ -6,6 +6,7 @@ import {Toaster} from 'sonner';
 import {useLocalStorage} from '@/hooks/useLocalStorage.ts';
 import {Button} from '@/components/ui/button.tsx';
 import {AddTodolistDialog} from '@/components/Todolist/AddTodolistDialog.tsx';
+import {Header} from '@/components/layout/Header.tsx';
 
 
 export const App = () => {
@@ -93,7 +94,7 @@ export const App = () => {
         setTasks({
             ...tasks,
             [todolistId]: getTasksForTodolist(todolistId).map(task =>
-                task.id === taskId ? {...task, title: newTitle } : task
+                task.id === taskId ? {...task, title: newTitle} : task
             ),
         })
     }
@@ -102,7 +103,7 @@ export const App = () => {
         setTasks({
             ...tasks,
             [todolistId]: getTasksForTodolist(todolistId).map(task =>
-                task.id === taskId ? {...task, isDone: newStatus } : task
+                task.id === taskId ? {...task, isDone: newStatus} : task
             ),
         });
     }
@@ -162,22 +163,22 @@ export const App = () => {
                     />
                 ))}
 
-                <AddTodolistDialog onAddTodolist={addTodolist} />
+                <AddTodolistDialog onAddTodolist={addTodolist}/>
             </>
         )
     }
 
     return (
-        <div className="min-h-screen p-4 bg-background">
-            <div className="container mx-auto">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                    {getMappedTodoLists()}
+        <div className="min-h-screen flex flex-col bg-background">
+            <Header/>
+            <main className="flex-1 p-4">
+                <div className="container mx-auto">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                        {getMappedTodoLists()}
+                    </div>
                 </div>
-            </div>
-            <Toaster
-                position={'bottom-center'}
-                duration={700}
-            />
+            </main>
+            <Toaster position={'bottom-center'} duration={700}/>
         </div>
     )
 }
