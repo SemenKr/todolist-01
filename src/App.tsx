@@ -7,6 +7,7 @@ import {useLocalStorage} from '@/hooks/useLocalStorage.ts';
 import {Button} from '@/components/ui/button.tsx';
 import {AddTodolistDialog} from '@/components/Todolist/AddTodolistDialog.tsx';
 import {Header} from '@/components/layout/Header.tsx';
+import {ThemeProvider} from '@/components/theme-provider.tsx';
 
 
 export const App = () => {
@@ -169,16 +170,18 @@ export const App = () => {
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-background">
-            <Header/>
-            <main className="flex-1 p-4">
-                <div className="container mx-auto">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-                        {getMappedTodoLists()}
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+            <div className="min-h-screen flex flex-col bg-background">
+                <Header/>
+                <main className="flex-1 p-4">
+                    <div className="container mx-auto">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+                            {getMappedTodoLists()}
+                        </div>
                     </div>
-                </div>
-            </main>
-            <Toaster position={'bottom-center'} duration={700}/>
-        </div>
+                </main>
+                <Toaster position={'bottom-center'} duration={700}/>
+            </div>
+        </ThemeProvider>
     )
 }
