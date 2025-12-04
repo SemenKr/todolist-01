@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Plus} from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 
 interface AddTodolistDialogProps {
@@ -100,6 +100,9 @@ export const AddTodolistDialog = ({ onAddTodolist }: AddTodolistDialogProps) => 
                             <Plus className="h-5 w-5" />
                             Создать новый список
                         </DialogTitle>
+                        <DialogDescription>
+                            Введите название для вашего нового списка задач
+                        </DialogDescription>
                     </DialogHeader>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
