@@ -1,6 +1,6 @@
-import { ModeToggle } from "@/components/mode-toggle"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { ModeToggle } from "@/components/mode-toggle.tsx"
+import { Button } from "@/components/ui/button.tsx"
+import { cn } from "@/lib/utils.ts"
 import {clearAppData} from '@/app/store.ts';
 
 export const Header = () => {
