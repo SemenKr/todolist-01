@@ -1,24 +1,15 @@
 import {AddTodolistDialog} from '@/components/Todolist/AddTodolistDialog.tsx';
 import {useAppSelector} from '@/hooks/useAppSelector.ts';
 import {selectTodolists} from '@/models/todolists/todolists-selectors.ts';
-import {selectTasks} from '@/models/tasks/tasks-selectors.ts';
 import {useAppDispatch} from '@/hooks/useAppDispatch.ts';
-import {changeTodolistFilterAC, createTodolistAC, deleteTodolistAC} from '@/models/todolists/todolists-reducer.ts';
-import {
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    clearTaskAC,
-    createTaskAC,
-    deleteTaskAC
-} from '@/models/tasks/tasks-reucer.ts';
-import {FilterValueType, TaskType, ToDoListType} from '@/types/types.ts';
+import {createTodolistAC} from '@/models/todolists/todolists-reducer.ts';
+import {ToDoListType} from '@/types/types.ts';
 import {TodolistItem} from '@/components/Todolist/TodolistItem.tsx';
 
 type MainPropsType = {};
 
 export const Main = ({}: MainPropsType) => {
     const todolists = useAppSelector(selectTodolists)
-    const tasks = useAppSelector(selectTasks)
     const dispatch = useAppDispatch()
 
     // Функция добавления нового тудулиста
@@ -26,33 +17,9 @@ export const Main = ({}: MainPropsType) => {
         dispatch(createTodolistAC(title))
     }
 
-    function deleteTodolist(todolistId: ToDoListType['id']) {
-        dispatch(deleteTodolistAC({id: todolistId}))
-    }
 
-    function addTask(taskTitle: string, todolistId: ToDoListType['id']) {
-        dispatch(createTaskAC({title: taskTitle, todolistId: todolistId}))
-    }
 
-    function removeTask(taskId: TaskType['id'], todolistId: ToDoListType['id']) {
-        dispatch(deleteTaskAC({taskId: taskId, todolistId: todolistId}))
-    }
 
-    function editTask(taskId: TaskType['id'], newTitle: TaskType['title'], todolistId: ToDoListType['id']) {
-        dispatch(changeTaskTitleAC({taskId, title: newTitle, todolistId}))
-    }
-
-    function changeTaskStatus(taskId: TaskType['id'], newStatus: TaskType['isDone'], todolistId: ToDoListType['id']) {
-        dispatch(changeTaskStatusAC({taskId, isDone: newStatus, todolistId: todolistId}))
-    }
-
-    function changeFilter(value: FilterValueType, todolistId: ToDoListType['id']) {
-        dispatch(changeTodolistFilterAC({id: todolistId, filter: value}))
-    }
-
-    function clearTasks(todolistId: ToDoListType['id']) {
-        dispatch(clearTaskAC({todolistId}))
-    }
 
     if (!todolists || todolists.length === 0) {
         return (
@@ -81,17 +48,7 @@ export const Main = ({}: MainPropsType) => {
                     {todolists.map(list => (
                         <TodolistItem
                             key={list.id}
-                            id={list.id}
-                            title={list.title}
-                            tasks={tasks[list.id]}
-                            removeTask={removeTask}
-                            toggleTask={changeTaskStatus}
-                            changeFilter={changeFilter}
-                            addTask={addTask}
-                            editTask={editTask}
-                            filter={list.filter}
-                            clearTasks={clearTasks}
-                            deleteTodolist={deleteTodolist}
+                            todolist={list}
                         />
                     ))}
                     <AddTodolistDialog onAddTodolist={addTodolist}/>
