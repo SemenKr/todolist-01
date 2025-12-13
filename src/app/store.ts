@@ -1,8 +1,8 @@
 // app/store.ts - Redux Store с автосохранением в localStorage
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { todolistsReducer } from '@/models/todolists/todolists-reducer';
-import { tasksReducer } from '@/models/tasks/tasks-reucer';
+import { todolistsReducer } from '@/feature/todolists/model/todolists-reducer.ts';
+import { tasksReducer } from '@/feature/todolists/model/tasks-reucer.ts';
 
 // ═══════════════════════════════════════════════════════════════════════════
 // КОНСТАНТЫ

@@ -1,10 +1,10 @@
 import {AddTodolistDialog} from '@/components/Todolist/AddTodolistDialog.tsx';
-import {useAppSelector} from '@/hooks/useAppSelector.ts';
-import {selectTodolists} from '@/models/todolists/todolists-selectors.ts';
-import {useAppDispatch} from '@/hooks/useAppDispatch.ts';
-import {createTodolistAC} from '@/models/todolists/todolists-reducer.ts';
+import {useAppSelector} from '@/common/hooks/useAppSelector.ts';
+import {selectTodolists} from '@/feature/todolists/model/todolists-selectors.ts';
+import {useAppDispatch} from '@/common/hooks/useAppDispatch.ts';
+import {createTodolistAC} from '@/feature/todolists/model/todolists-reducer.ts';
 import {ToDoListType} from '@/types/types.ts';
-import {TodolistItem} from '@/components/Todolist/TodolistItem.tsx';
+import {TodolistItem} from '@/feature/todolists/ui/Todolists/TodolistItem.tsx';
 
 type MainPropsType = {};
 

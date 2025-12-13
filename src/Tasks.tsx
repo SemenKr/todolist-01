@@ -1,6 +1,6 @@
-import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
 import { EmptyState } from '@/components/Todolist/EmptyState.tsx';
-import { selectTasksByTodolistId } from '@/models/tasks/tasks-selectors.ts';
+import { selectTasksByTodolistId } from '@/feature/todolists/model/tasks-selectors.ts';
 import { useMemo } from 'react';
 import { FilterValueType } from '@/types/types.ts';
 import {TaskItem} from '@/TaskItem.tsx';

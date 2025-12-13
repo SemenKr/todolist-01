@@ -1,19 +1,18 @@
-import { Button, CardFooter } from '@/components/ui';
-import { FilterValueType, ToDoListType } from '@/types/types.ts';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { KeyboardEvent, useState } from 'react';
-import { FilterButtons } from '@/components/Todolist/FilterButtons.tsx';
-import { Input } from '@/components/ui/input.tsx';
-import { Plus, Trash2 } from 'lucide-react';
-import { Title } from '@/components/ui/title.tsx';
-import { Badge } from '@/components/ui/badge.tsx';
-import { toast } from 'sonner';
-import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { changeTodolistFilterAC, deleteTodolistAC } from '@/models/todolists/todolists-reducer.ts';
-import { clearTaskAC, createTaskAC } from '@/models/tasks/tasks-reucer.ts';
-import { selectTasksByTodolistId } from '@/models/tasks/tasks-selectors.ts';
+import {Button, CardFooter} from '@/components/ui';
+import {FilterValueType, ToDoListType} from '@/types/types.ts';
+import {Card, CardContent, CardHeader} from '@/components/ui/card.tsx';
+import {FilterButtons} from '@/components/Todolist/FilterButtons.tsx';
+import {Trash2} from 'lucide-react';
+import {Title} from '@/components/ui/title.tsx';
+import {Badge} from '@/components/ui/badge.tsx';
+import {toast} from 'sonner';
+import {useAppDispatch} from '@/common/hooks/useAppDispatch.ts';
+import {useAppSelector} from '@/common/hooks/useAppSelector.ts';
+import {changeTodolistFilterAC, deleteTodolistAC} from '@/feature/todolists/model/todolists-reducer.ts';
+import {clearTaskAC, createTaskAC} from '@/feature/todolists/model/tasks-reucer.ts';
+import {selectTasksByTodolistId} from '@/feature/todolists/model/tasks-selectors.ts';
 import {Tasks} from '@/Tasks.tsx';
+import {CreateItemForm} from '@/CreateItemForm.tsx';
 
 type TodolistItemPropsType = {
     todolist: ToDoListType;
@@ -21,28 +20,21 @@ type TodolistItemPropsType = {
 
 export const TodolistItem = ({ todolist }: TodolistItemPropsType) => {
     const { id, title, filter } = todolist;
-    const [inputValue, setInputValue] = useState('');
     const dispatch = useAppDispatch();
 
     // Получаем задачи только этого тудулиста
     const tasks = useAppSelector(state => selectTasksByTodolistId(state, id));
 
-    const addTaskHandler = () => {
-        const trimmedInput = inputValue.trim();
+    const addTaskHandler = (title: string) => {
+        const trimmedInput = title.trim();
         if (!trimmedInput) {
             toast.error('Введите текст задачи');
             return;
         }
         dispatch(createTaskAC({ title: trimmedInput, todolistId: id }));
-        setInputValue('');
         toast.success('Задача добавлена! 🎉');
     };
 
-    const onEnterAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            addTaskHandler();
-        }
-    };
 
     const handleFilterChange = (value: FilterValueType) => {
         dispatch(changeTodolistFilterAC({ id, filter: value }));
@@ -82,23 +74,7 @@ export const TodolistItem = ({ todolist }: TodolistItemPropsType) => {
             </CardHeader>
 
             <CardContent className="space-y-6">
-                <div className="flex flex-col sm:flex-row gap-2">
-                    <Input
-                        placeholder="Добавьте новую задачу..."
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={onEnterAddTaskHandler}
-                        className="flex-1"
-                    />
-                    <Button
-                        onClick={addTaskHandler}
-                        disabled={!inputValue.trim()}
-                        className="sm:px-4 px-3 py-2"
-                    >
-                        <Plus className="h-5 w-5"/>
-                        <span className="sr-only">Добавить задачу</span>
-                    </Button>
-                </div>
+                <CreateItemForm onAdd={(title)=>addTaskHandler(title)} placeholder={'add Task ...'} />
 
                 <FilterButtons
                     currentFilter={filter}

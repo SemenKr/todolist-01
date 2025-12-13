@@ -1,6 +1,6 @@
 import { TaskType } from '@/types/types.ts';
-import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC } from '@/models/tasks/tasks-reucer.ts';
+import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
+import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC } from '@/feature/todolists/model/tasks-reucer.ts';
 import { Checkbox } from '@/components/ui/checkbox.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import { Trash2, Edit2, Check, X } from 'lucide-react';
