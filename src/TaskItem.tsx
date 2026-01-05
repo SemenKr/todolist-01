@@ -1,17 +1,19 @@
-import { TaskType } from '@/types/types.ts';
-import { useAppDispatch } from '@/common/hooks/useAppDispatch.ts';
-import { changeTaskStatusAC, changeTaskTitleAC, deleteTaskAC } from '@/feature/todolists/model/tasks-reucer.ts';
-import { Checkbox } from '@/components/ui/checkbox.tsx';
-import { Button } from '@/components/ui/button.tsx';
-import { Trash2, Edit2, Check, X } from 'lucide-react';
-import { useState, KeyboardEvent } from 'react';
-import { Input } from '@/components/ui/input.tsx';
-import { toast } from 'sonner';
+import {TaskStatus} from '@/common/enums';
+import {useAppDispatch} from '@/common/hooks/useAppDispatch.ts';
+import {Button} from '@/components/ui/button.tsx';
+import {Checkbox} from '@/components/ui/checkbox.tsx';
+import {Input} from '@/components/ui/input.tsx';
+import type {DomainTask} from '@/feature/todolists/api/tasksApi.types';
+import { deleteTaskTC, updateTaskTC} from '@/feature/todolists/model/tasks-slice.ts';
+import {Check, Edit2, Trash2, X} from 'lucide-react';
+import {KeyboardEvent, useState} from 'react';
+import {toast} from 'sonner';
 
 type TaskItemPropsType = {
-    todolistId: string;
-    task: TaskType;
-};
+    todolistId: string
+    task: DomainTask
+}
+
 
 export const TaskItem = ({ todolistId, task }: TaskItemPropsType) => {
     const dispatch = useAppDispatch();
@@ -19,20 +21,26 @@ export const TaskItem = ({ todolistId, task }: TaskItemPropsType) => {
     const [editValue, setEditValue] = useState(task.title);
 
     const handleToggle = () => {
-        dispatch(changeTaskStatusAC({
-            taskId: task.id,
-            isDone: !task.isDone,
-            todolistId
-        }));
-    };
-
+        dispatch(
+            updateTaskTC({
+                todolistId,
+                taskId: task.id,
+                model: {
+                    title: task.title,
+                    description: task.description,
+                    completed: !task.completed,
+                    status: task.completed ? TaskStatus.New : TaskStatus.Completed,
+                    priority: task.priority,
+                    startDate: task.startDate,
+                    deadline: task.deadline,
+                },
+            })
+        )
+    }
     const handleDelete = () => {
-        dispatch(deleteTaskAC({
-            taskId: task.id,
-            todolistId
-        }));
-        toast.success('Задача удалена');
-    };
+        dispatch(deleteTaskTC({ taskId: task.id, todolistId }))
+        toast.success('Задача удалена')
+    }
 
     const handleEdit = () => {
         setIsEditing(true);
@@ -49,11 +57,22 @@ export const TaskItem = ({ todolistId, task }: TaskItemPropsType) => {
             setIsEditing(false);
             return;
         }
-        dispatch(changeTaskTitleAC({
-            taskId: task.id,
-            title: trimmed,
-            todolistId
-        }));
+        dispatch(
+            updateTaskTC({
+                todolistId,
+                taskId: task.id,
+                model: {
+                    title: trimmed,
+                    description: task.description,
+                    completed: task.completed,
+                    status: task.status,
+                    priority: task.priority,
+                    startDate: task.startDate,
+                    deadline: task.deadline,
+                },
+            })
+        )
+
         setIsEditing(false);
         toast.success('Задача обновлена');
     };
@@ -101,14 +120,14 @@ export const TaskItem = ({ todolistId, task }: TaskItemPropsType) => {
     return (
         <div className="group flex items-center gap-3 p-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
             <Checkbox
-                checked={task.isDone}
+                checked={task.completed}
                 onCheckedChange={handleToggle}
                 id={task.id}
             />
             <label
                 htmlFor={task.id}
                 className={`flex-1 cursor-pointer select-none transition-all ${
-                    task.isDone
+                    task.completed
                         ? 'line-through text-gray-400 dark:text-gray-500'
                         : 'text-gray-900 dark:text-gray-100'
                 }`}

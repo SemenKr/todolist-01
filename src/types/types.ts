@@ -1,3 +1,5 @@
+import type {DomainTask} from '@/feature/todolists/api/tasksApi.types';
+
 export type ToDoListType = {
     id: string
     title: string
@@ -19,7 +21,7 @@ export type TaskType = {
 }
 
 export type TasksListType = {
-    [todolistId: string]: TaskType[]
+    [todolistId: string]: DomainTask[]
 }
 
 export type FilterValueType = 'all' | 'completed' | 'active'

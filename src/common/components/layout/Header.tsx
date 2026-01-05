@@ -1,7 +1,6 @@
 import { ModeToggle } from "@/components/mode-toggle.tsx"
 import { Button } from "@/components/ui/button.tsx"
 import { cn } from "@/common/lib/utils.ts"
-import {clearAppData} from '@/app/store.ts';
 
 export const Header = () => {
     return (
@@ -10,9 +9,6 @@ export const Header = () => {
                 <h1 className="text-xl font-bold tracking-tight">ToDoList</h1>
 
                 <nav className="flex items-center gap-3">
-                    <Button onClick={clearAppData} variant="outline">
-                        Очистить все данные
-                    </Button>
                     <Button variant="ghost" size="sm">Home</Button>
                     <Button variant="ghost" size="sm">About</Button>
                     <ModeToggle />

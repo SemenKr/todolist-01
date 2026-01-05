@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui';
-import {FilterButtonsProps, FilterValueType} from '../../types/types.ts'
+import {FilterButtonsProps, FilterValueType} from '@/types/types'
 
 export const FilterButtons = ({ currentFilter, onFilterChange }: FilterButtonsProps) => {
     const filters: { value: FilterValueType; label: string; shortLabel?: string }[] = [

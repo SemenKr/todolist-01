@@ -1,18 +1,25 @@
-import { useAppSelector } from '@/common/hooks/useAppSelector.ts';
-import { EmptyState } from '@/components/Todolist/EmptyState.tsx';
-import { selectTasksByTodolistId } from '@/feature/todolists/model/tasks-selectors.ts';
-import { useMemo } from 'react';
-import { FilterValueType } from '@/types/types.ts';
+import {useAppDispatch} from '@/common/hooks/useAppDispatch';
+import {useAppSelector} from '@/common/hooks/useAppSelector.ts';
+import {fetchTasksTC, selectTasksByTodolistId} from '@/feature/todolists/model/tasks-slice';
+import {EmptyState} from '@/feature/todolists/ui/Todolists/Todolist/EmptyState.tsx';
 import {TaskItem} from '@/TaskItem.tsx';
+import {FilterValueType} from '@/types/types.ts';
+import {useEffect, useMemo} from 'react';
 
 type TasksPropsType = {
     todolistId: string;
     filter: FilterValueType;
 };
 
-export const Tasks = ({ todolistId, filter }: TasksPropsType) => {
+export const Tasks = ({todolistId, filter}: TasksPropsType) => {
     // Получаем только задачи конкретного тудулиста
     const tasks = useAppSelector(state => selectTasksByTodolistId(state, todolistId));
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(fetchTasksTC(todolistId))
+    }, [dispatch, todolistId])
+
 
     // Мемоизированная фильтрация задач
     const filteredTasks = useMemo(() => {
@@ -20,9 +27,9 @@ export const Tasks = ({ todolistId, filter }: TasksPropsType) => {
 
         switch (filter) {
             case 'active':
-                return tasks.filter(task => !task.isDone);
+                return tasks.filter(task => !task.completed);
             case 'completed':
-                return tasks.filter(task => task.isDone);
+                return tasks.filter(task => task.completed);
             case 'all':
             default:
                 return tasks;
@@ -30,7 +37,7 @@ export const Tasks = ({ todolistId, filter }: TasksPropsType) => {
     }, [tasks, filter]);
 
     if (!tasks || tasks.length === 0) {
-        return <EmptyState />;
+        return <EmptyState/>;
     }
 
     return (

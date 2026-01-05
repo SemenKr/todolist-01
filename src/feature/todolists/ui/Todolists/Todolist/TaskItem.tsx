@@ -1,5 +1,5 @@
 import {Button} from '@/components/ui';
-import {TaskItemType} from '../../types/types.ts';
+import {TaskItemType} from '@/types/types';
 import {Checkbox} from '@/components/ui/checkbox';
 import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
 import {Input} from '@/components/ui/input';
@@ -70,7 +70,7 @@ export function TaskItem({
                     <PopoverTrigger asChild>
                         <span
                             className={`
-                                text-base font-medium w-full break-words cursor-pointer
+                                text-base font-medium w-full wrap-break-word cursor-pointer
                                 rounded px-2 py-1 transition-colors
                                 ${task.isDone
                                 ? 'line-through text-gray-400'
