@@ -1,33 +1,42 @@
-import { Button } from '@/components/ui';
-import {FilterButtonsProps, FilterValueType} from '@/types/types'
+import {useAppDispatch} from '@/common/hooks/useAppDispatch';
+import {Button} from '@/common/components/ui';
+import {todolistsApi} from '@/feature/todolists/api/todolistsApi';
+import type {FilterValues} from '@/feature/todolists/libs/types';
+import {FilterButtonsProps} from '@/types/types'
 
-export const FilterButtons = ({ currentFilter, onFilterChange }: FilterButtonsProps) => {
-    const filters: { value: FilterValueType; label: string; shortLabel?: string }[] = [
-        { value: 'all', label: 'All', shortLabel: 'All' },
-        { value: 'active', label: 'Active', shortLabel: 'Act' },
-        { value: 'completed', label: 'Completed', shortLabel: 'Compl' }
-    ]
+export const FilterButtons = ({ todolist }: FilterButtonsProps) => {
+    const { id, filter } = todolist
+    const dispatch = useAppDispatch()
 
-    const getButtonVariant = (filterValue: FilterValueType) => {
-        return currentFilter === filterValue ? 'default' : 'outline'
+    const changeFilter = (filter: FilterValues) => {
+        dispatch(
+            todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
+                const todolist = state.find((todolist) => todolist.id === id)
+                if (todolist) {
+                    todolist.filter = filter
+                }
+            }),
+        )
     }
+
 
     return (
         <div className="flex gap-1 sm:gap-2">
-            {filters.map((filter) => (
-                <Button
-                    key={filter.value}
-                    title={filter.label} // Полное название для tooltip
-                    onClick={() => onFilterChange(filter.value)}
-                    variant={getButtonVariant(filter.value)}
-                    size="sm"
-                    className="flex-1 text-xs sm:text-sm" // Меньший текст на мобильных
-                >
-                    {/* Показываем короткую версию на мобильных, полную на больших экранах */}
-                    <span className="sm:hidden">{filter.shortLabel}</span>
-                    <span className="hidden sm:inline">{filter.label}</span>
-                </Button>
-            ))}
+            <Button variant={filter === "all" ? "outline" : "ghost"}  onClick={() => changeFilter("all")}>
+                All
+            </Button>
+            <Button
+                variant={filter === "active" ? "outline" : "ghost"}
+                onClick={() => changeFilter("active")}
+            >
+                Active
+            </Button>
+            <Button
+                variant={filter === "completed" ? "outline" : "ghost"}
+                onClick={() => changeFilter("completed")}
+            >
+                Completed
+            </Button>
         </div>
     )
 }

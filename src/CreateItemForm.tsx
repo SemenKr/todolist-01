@@ -1,17 +1,19 @@
 import {useState,KeyboardEvent} from 'react';
-import {Button, Input} from '@/components/ui';
+import {Button, Input} from '@/common/components/ui';
 import {Plus} from 'lucide-react';
 
 type CreateItemFormPropsType = {
     onAdd: (title: string) => void;
     placeholder?: string;
+    disabled?: boolean;
 };
 
-export const CreateItemForm = ({onAdd, placeholder}: CreateItemFormPropsType) => {
+export const CreateItemForm = ({onAdd, placeholder, disabled = false}: CreateItemFormPropsType) => {
 
     const [value, setValue] = useState("");
 
     const add = () => {
+        if (disabled) return;
         const trimmed = value.trim();
         if (!trimmed) return;
         onAdd(trimmed);
@@ -30,9 +32,10 @@ export const CreateItemForm = ({onAdd, placeholder}: CreateItemFormPropsType) =>
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     onKeyDown={onEnter}
+                    disabled={disabled}
                 />
 
-                <Button disabled={!value.trim()} onClick={add}>
+                <Button disabled={disabled || !value.trim()} onClick={add}>
                     <Plus className="h-5 w-5" />
                 </Button>
             </div>

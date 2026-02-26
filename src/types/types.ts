@@ -1,4 +1,5 @@
 import type {DomainTask} from '@/feature/todolists/api/tasksApi.types';
+import type {DomainTodolist} from '@/feature/todolists/libs/types';
 
 export type ToDoListType = {
     id: string
@@ -27,6 +28,5 @@ export type TasksListType = {
 export type FilterValueType = 'all' | 'completed' | 'active'
 
 export type FilterButtonsProps = {
-    currentFilter: FilterValueType
-    onFilterChange: (filter: FilterValueType) => void
+    todolist: DomainTodolist
 }
