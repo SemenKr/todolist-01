@@ -1,23 +1,21 @@
-// app/store.ts — Redux Store (server-driven)
-
-import {todolistsReducer, todolistsSlice} from '@/feature/todolists/model/todolists-slice';
-import { configureStore } from '@reduxjs/toolkit'
-import { tasksReducer } from '@/feature/todolists/model/tasks-slice'
-
-// ═══════════════════════════════════════════════════════════════════════════
-// СОЗДАНИЕ STORE
-// ═══════════════════════════════════════════════════════════════════════════
+import {appReducer, appSlice} from '@/app/appSlice';
+import { baseApi } from "@/app/baseApi"
+import { configureStore } from "@reduxjs/toolkit"
+import { setupListeners } from "@reduxjs/toolkit/query"
 
 export const store = configureStore({
     reducer: {
-        [todolistsSlice.name]: todolistsReducer,
-        tasks: tasksReducer,
+        [appSlice.name]: appReducer,
+        [baseApi.reducerPath]: baseApi.reducer,
     },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 })
 
-// ═══════════════════════════════════════════════════════════════════════════
-// ТИПЫ
-// ═══════════════════════════════════════════════════════════════════════════
+setupListeners(store.dispatch)
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+
+// для возможности обращения к store в консоли браузера
+// @ts-ignore
+window.store = store

@@ -1,0 +1,31 @@
+.container {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(4rem, 12vw, 8rem);
+  line-height: 1;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: 0.02em;
+}
+
+.subtitle {
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  line-height: 1.2;
+  text-transform: lowercase;
+  letter-spacing: 0.12em;
+  color: #6b7280;
+}
+
+.button {
+  width: 330px;
+  margin-top: 20px;
+}
