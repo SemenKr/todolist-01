@@ -13,8 +13,9 @@ export { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 export { Form } from './form';
 export { Input } from './input';
 export { Label } from './label';
+export { CircularProgress } from './circular-progress';
 export { Popover, PopoverContent, PopoverTrigger } from './popover';
-export { Progress } from './progress';
+export { Progress, LinearProgress } from './progress';
 export { ScrollArea } from './scroll-area';
 export { Select } from './select';
 export { Separator } from './separator';

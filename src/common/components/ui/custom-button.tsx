@@ -4,12 +4,13 @@ import { ReactNode } from 'react';
 type Props = {
     title?: string
     children?: ReactNode
-    onClick: () => void
+    onClick?: () => void
     className?: string
     variant?: 'default' | 'outline' | 'ghost' | 'destructive' | 'secondary' | 'link'
     size?: 'default' | 'sm' | 'lg' | 'icon'
     disabled?: boolean
     type?: 'button' | 'submit' | 'reset'
+    asChild?: boolean
 }
 
 export const CustomButton = ({
@@ -20,22 +21,24 @@ export const CustomButton = ({
                                  variant = 'outline',
                                  size = 'default',
                                  disabled,
-                                 type = 'button'
+                                 type = 'button',
+                                 asChild = false
                              }: Props) => {
     const onClickHandler = () => {
         if (!disabled) {
-            onClick()
+            onClick?.()
         }
     }
 
     return (
         <ShadcnButton
-            onClick={onClickHandler}
+            onClick={onClick ? onClickHandler : undefined}
             variant={variant}
             size={size}
             className={`cursor-pointer ${className}`}
             disabled={disabled}
-            type={type}
+            type={asChild ? undefined : type}
+            asChild={asChild}
         >
             {children || title}
         </ShadcnButton>

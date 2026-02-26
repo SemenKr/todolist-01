@@ -1,4 +1,17 @@
 @import "tailwindcss";
+
+:root {
+	--linear-progress-bg: rgba(59, 130, 246, 0.2);
+}
+
+@keyframes linear-progress {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(100%);
+	}
+}
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
