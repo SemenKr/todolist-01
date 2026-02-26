@@ -1,5 +1,4 @@
 import {setIsLoggedInAC} from '@/app/appSlice';
-
 import {AUTH_TOKEN} from '@/common/constants'
 import {ResultCode} from '@/common/enums'
 import {useAppDispatch} from '@/common/hooks/useAppDispatch';
