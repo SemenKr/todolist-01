@@ -35,7 +35,9 @@ export const App = () => {
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <div className="min-h-screen flex flex-col bg-background">
                 <Header/>
-                <Routing />
+                <div className="flex-1 min-h-0">
+                    <Routing />
+                </div>
                 {/*<Main/>*/}
                 <Toaster position={'bottom-center'} duration={700}/>
             </div>
